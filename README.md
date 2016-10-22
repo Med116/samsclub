@@ -1,16 +1,24 @@
 
 # Ticketing Service
-    A Spring boot app that makes *these assumptions* :
-    - The data is loaded up once, and modified while the server is running. It does not attempt to save to disk.
-    - There are 260 seats (26 rows, one for each letter and 10 seats per row). They are all initialized to the 'available' status.
-    - Seats can be held for default of 60 seconds before the customer's hold expires. This can be configured at startup with the `-expire_seconds <seconds>` flag.
+
+A Spring boot app that implements a ticketting hold/reservation system for a venue.
+
+
+## ASSUMPTIONS
+
+- No login required, a user uses his/her email address to identify.
+- The Seat data is loaded up once, and modified while the server is running. It does not attempt to save to disk. This means that once the server is shutdown, there is no way to restore any data.
+- There are 260 seats (26 rows, one for each letter and 10 seats per row). They are all initialized to the 'available' status.
+- Seats can be held for default of 60 seconds before the customer's hold expires. This can be configured at startup with the `-expire_seconds <seconds>` flag.
+
     
 ## APP REQUIREMENTS
 
 1. Java 8 JRE
-2. git
+2. git (to clone this)
 3. maven
 4. Browser to run the UI 
+
     
 ## HOW TO BUILD
 

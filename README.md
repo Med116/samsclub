@@ -20,7 +20,7 @@ A Spring boot app that implements a ticketting hold/reservation system for a ven
 4. Browser to run the UI 
 
     
-## HOW TO BUILD
+## HOW TO BUILD/TEST
 
 1. Clone the repo onto a git installed machine with this command `https://github.com/Med116/samsclub.git`
 
@@ -28,4 +28,7 @@ A Spring boot app that implements a ticketting hold/reservation system for a ven
 
 3. `cd` into the target directory, and issue the command `java -jar ticketapp-0.0.1-SNAPSHOT.jar` . This runs the spring boot server. 
 
-4. open up a web browser to [localhost:8080](http://localhost:8080 "localhost:8080").
+4. Open up a web browser to [localhost:8080](http://localhost:8080 "localhost:8080").
+
+5. To test the app, stop the server (Hit Ctrl-C to stop), and then run `mvv test` in the root directory (where the .pom file resides)
+ 

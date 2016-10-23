@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.samsclub.ticketapp.data.SeatProvider;
 import com.samsclub.ticketapp.models.Seat;
 import com.samsclub.ticketapp.models.SeatHold;
 import com.samsclub.ticketapp.util.Util;
@@ -19,7 +20,7 @@ public class TicketServiceImpl implements TicketService{
 
 	@Override
 	public int numSeatsAvailable() {
-		return (int) Util.seatIndex.stream()
+		return (int) SeatProvider.seats.stream()
 				.filter(Seat::isAvailable)
 				.count();
 	}
@@ -41,7 +42,7 @@ public class TicketServiceImpl implements TicketService{
 	public String reserveSeats(int seatHoldId, String customerEmail) {
 		Date now = new Date();
 		String reservationCode = "RESERVED|" + seatHoldId  + "|" + new SimpleDateFormat("yyyy-MM-dd").format(now);
-		List<Seat> reservedSeats = Util.seatIndex.stream()
+		List<Seat> reservedSeats = SeatProvider.seats.stream()
 		.filter(seat-> seat.getHoldId() == seatHoldId)
 		.filter(seat-> seat.getHoldExpiration().getTime() > now.getTime())
 		.map(seat -> seat.setReservationCode(reservationCode))

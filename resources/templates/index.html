@@ -1,0 +1,84 @@
+<html>
+	<head>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<link type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+	</head>
+	<body style="margin-left:100px;padding-left:100px;">
+		<img src="http://monroearts.com/wp-content/uploads/2015/07/tickets.png" />
+		<h1> Tickets Available: <span class="tix_count">...</span> </h1>
+		
+		<p class="input_data email"> Enter your email to hold and reserve tickets: <input type="text"/></p>
+		
+		<p class="input_data action_hold"> Hold Tickets (enter in amount you would like to hold): <input type="text"/>
+			<button>Hold Tickets</button>
+		</p>
+		<p class="input_data action_reserve"> Reserve Tickets <input type="text"/>
+			<button>Reserve Tickets</button>
+		</p>
+		
+		<div id="seats_chart">
+		
+		</div>
+		
+		<script>
+			
+			function getAvailableSeatsCount(){
+				
+				jQuery.post("/seats/available/", function(json){
+					jQuery(".tix_count").text(json.availableNum);
+				});
+				
+			}
+			
+			function getEmail(){
+				
+				var email = jQuery(".email input").val();
+				if(email !== undefined){
+					return email;
+				}else{
+					alert("You must enter in an email address");
+					return false;
+				}
+			}
+			
+			function holdSeats(){
+				console.log("IN HOLD SEATS");
+				var email = getEmail();
+				console.log("EMAIL: " , email);
+				
+				if(email){
+					
+					var holdCount = jQuery(".action_hold input").val();
+					
+					if(holdCount !== undefined){
+						
+						jQuery.post("/seats/find-and-hold/",{email: email,numSeats: holdCount },  function(json){
+							console.log("JSON: " , json);
+							getAvailableSeatsCount();
+						});
+						
+					}else{
+						alert("Please enter # of tickets you would like to hold");
+					}
+					
+					
+				}
+				
+			}
+			
+			
+			jQuery(document).ready(function(){
+				
+				getAvailableSeatsCount();
+				
+				jQuery(document).on("click", ".action_hold button", holdSeats);
+				
+			});
+			
+			
+			
+		</script>
+		
+		
+	</body>
+</html>

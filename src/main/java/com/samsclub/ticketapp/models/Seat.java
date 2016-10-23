@@ -14,6 +14,7 @@ public class Seat {
 	private Date holdExpiration = null;
 	private int holdId;
 	private String reservationCode;
+	private String customerEmail;
 
 	public Seat(String index) {
 		this.setSeatIndex(index);
@@ -53,7 +54,7 @@ public class Seat {
 		return available;
 
 	}
-
+	
 	private void setAvailable(boolean available) {
 		this.available = available;
 	}
@@ -92,9 +93,9 @@ public class Seat {
 		return reservationCode;
 	}
 
-	public Seat setReservationCode(String reservationCode) {
+	
+	public void  setReservationCode(String reservationCode) {
 		this.reservationCode = reservationCode;
-		return this;
 	}
 
 	@Override
@@ -102,4 +103,20 @@ public class Seat {
 		return "[ SEAT:" + this.seatIndex + "]";
 	}
 
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
+
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
+	
+	public Seat reserveSeat(String code, String email){
+		
+		setCustomerEmail(email);
+		setReservationCode(code);
+		
+		return this;
+	}
+	
 }

@@ -2,6 +2,12 @@
 	<head>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 		<link type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.yellow{
+				background:yellow;
+				color:purple;
+			}
+		</style>
 	</head>
 	<body style="margin-left:100px;padding-left:100px;">
 		<img src="http://monroearts.com/wp-content/uploads/2015/07/tickets.png" />
@@ -17,10 +23,17 @@
 			<button>Reserve Tickets</button>
 		</p>
 		
+		
 		<div id="hold_confirmation">
 		
 		</div>
 		
+		<div id="reserve_confirmation">
+		
+		</div>
+		
+		
+		<h2> Raw Seat Data </h2>
 		<div id="seats_chart">
 		
 		</div>
@@ -51,8 +64,29 @@
 				var data = {seatHoldId: holdId, email:getEmail};
 				jQuery.post("/seats/reserve/", data, function(json){
 					console.log(json);
-					jQuery(".action_reserve").text("SUCCESS: YOUR CODE: " + json.code + " SEATS : " + json.seats.length  );
+					jQuery("#reserve_confirmation").text("SUCCESS: YOUR CODE: " + json.code + " SEATS : " + json.seats.length  );
+					updateSeatsChart();			
 				});	
+			
+			}
+			
+			function updateSeatsChart(){
+			
+				var root = jQuery("#seats_chart");
+				jQuery.post("/seats/all/", function(json){
+					
+					console.log("ALL SEATS: ", json);
+					root.html("<pre>" + JSON.stringify(json, null, "\t")  + "</pre>");
+					
+					// flash root to let know its been updated
+					setTimeout(function(){
+						root.find("pre").addClass("yellow");
+						setTimeout(function(){
+							root.find("pre").removeClass("yellow");
+						}, 500);	
+					}, 500);
+				});
+				
 			
 			}
 			
@@ -81,6 +115,7 @@
 								
 							}
 							getAvailableSeatsCount();
+							updateSeatsChart();
 							
 						});
 						
@@ -93,6 +128,7 @@
 			
 			jQuery(document).ready(function(){
 				getAvailableSeatsCount();
+				updateSeatsChart();
 				jQuery(document).on("click", ".action_hold button", holdSeats);
 				jQuery(document).on("click", ".action_reserve button", reserveSeats);
 				

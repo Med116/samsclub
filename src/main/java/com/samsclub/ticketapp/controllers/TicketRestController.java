@@ -75,7 +75,7 @@ public class TicketRestController {
 	/**
 	 * @return All Seats, for constructing the seats markup
 	 */
-	@RequestMapping("/seats/all")
+	@RequestMapping("/seats/all/")
 	public List<Seat> allSeats() {
 		return SeatProvider.seats;
 	}

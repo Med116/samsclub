@@ -64,6 +64,7 @@ public class SeatHold {
 				.map(seat -> {
 					seat.hold();
 					seat.setHoldId(holdId);
+					seat.setCustomerEmail(getCustomerEmail());
 					return seat;
 				}).collect(Collectors.toList()));
 		setValid(true);

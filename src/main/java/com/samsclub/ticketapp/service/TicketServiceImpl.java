@@ -45,13 +45,10 @@ public class TicketServiceImpl implements TicketService{
 		List<Seat> reservedSeats = SeatProvider.seats.stream()
 		.filter(seat-> seat.getHoldId() == seatHoldId)
 		.filter(seat-> seat.getHoldExpiration().getTime() > now.getTime())
-		.map(seat -> seat.setReservationCode(reservationCode))
+		.map(seat -> seat.reserveSeat(reservationCode, customerEmail))
 		.collect(Collectors.toList());
 		 return reservedSeats.size() > 0 ? reservationCode : null;
 		
-		
-		
-	
 	}
 
 }

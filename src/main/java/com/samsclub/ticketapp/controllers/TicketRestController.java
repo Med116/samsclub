@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.samsclub.ticketapp.data.SeatProvider;
+import com.samsclub.ticketapp.models.Reservation;
 import com.samsclub.ticketapp.models.Seat;
 import com.samsclub.ticketapp.models.SeatHold;
 import com.samsclub.ticketapp.models.SeatsAvailable;
@@ -50,13 +51,16 @@ public class TicketRestController {
 	 * @return
 	 */
 	@RequestMapping(value = "/seats/reserve/", method = RequestMethod.POST)
-	public String reserveSeat(@RequestParam("seatHoldId") String seatHoldId, @RequestParam("email") String email) {
+	public Reservation reserveSeat(@RequestParam("seatHoldId") String seatHoldId, @RequestParam("email") String email) {
 		String reservationId = ticketService.reserveSeats(Integer.parseInt(seatHoldId), email);
-		if (reservationId == null) {
-			return "Problem with seat reservation!";
+
+		Reservation reservation = new Reservation(email);
+		if (reservationId != null) {
+			reservation.setCode(reservationId);
 		} else {
-			return "Success, your seat reservation is : " + reservationId + " \n" + Util.printSeatInfo(reservationId);
+			System.out.println("ERR: null reservation id");
 		}
+		return reservation;
 	}
 
 	/**

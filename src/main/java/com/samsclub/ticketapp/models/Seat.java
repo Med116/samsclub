@@ -29,27 +29,28 @@ public class Seat {
 
 	public boolean isAvailable() {
 		Date now = new Date();
-		// detect whether any hold has expired, and unhold seat
-		if (this.held == true && this.holdExpiration.getTime() < now.getTime()) {
-			// setHeld(false);
-			// setAvailable(true);
-			return true;
-		}
-		// if its held and has not expired yet, its still not available, so set
-		// held==true,available==false
-		if (this.holdExpiration != null && this.holdExpiration.getTime() > now.getTime()) {
-			// setHeld(true);
-			// setAvailable(false);
-			return false;
-		}
+		
 		// check if there are already reserved seats, these cannot expire
 		if (getReservationCode() != null) {
 			// setHeld(true);
 			// setAvailable(false);
 			return false;
 		}
+		
+		// detect whether any hold has expired
+		if (this.held == true && this.holdExpiration.getTime() < now.getTime()) {
+			 setHeld(false);
+			 setAvailable(true);
+			
+		}
+		// if its held and has not expired yet
+		if (this.holdExpiration != null && this.holdExpiration.getTime() > now.getTime()) {
+			 setHeld(true);
+			 setAvailable(false);
+		}
+		
 
-		return true;
+		return available;
 
 	}
 

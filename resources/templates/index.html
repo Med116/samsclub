@@ -12,9 +12,14 @@
 		<p class="input_data action_hold"> Hold Tickets (enter in amount you would like to hold): <input type="text"/>
 			<button>Hold Tickets</button>
 		</p>
+		
 		<p class="input_data action_reserve"> Reserve Tickets <input type="text"/>
 			<button>Reserve Tickets</button>
 		</p>
+		
+		<div id="hold_confirmation">
+		
+		</div>
 		
 		<div id="seats_chart">
 		
@@ -41,6 +46,17 @@
 				}
 			}
 			
+			function reserveSeats(){
+				var holdId = jQuery(".action_reserve input").val();
+				var data = {seatHoldId: holdId, email:getEmail};
+				jQuery.post("/seats/reserve/", data, function(json){
+					console.log(json);
+					jQuery(".action_reserve").text("SUCCESS: YOUR CODE: " + json.code + " SEATS : " + json.seats.length  );
+				});	
+			
+			}
+			
+			
 			function holdSeats(){
 				console.log("IN HOLD SEATS");
 				var email = getEmail();
@@ -54,28 +70,33 @@
 						
 						jQuery.post("/seats/find-and-hold/",{email: email,numSeats: holdCount },  function(json){
 							console.log("JSON: " , json);
+							var holdId = json['holdId'];
+							if(parseInt(holdId)){
+								var list = jQuery("<ol></ol>");
+								json.seatsHeld.map(function(seat){
+									list.append(jQuery("<li>" + seat.seatIndex + "</li>"))
+								});
+								jQuery("#hold_confirmation").append(list);
+								jQuery(".action_reserve input").val(json.holdId);
+								
+							}
 							getAvailableSeatsCount();
+							
 						});
 						
 					}else{
 						alert("Please enter # of tickets you would like to hold");
 					}
-					
-					
+							
 				}
-				
 			}
 			
-			
 			jQuery(document).ready(function(){
-				
 				getAvailableSeatsCount();
-				
 				jQuery(document).on("click", ".action_hold button", holdSeats);
+				jQuery(document).on("click", ".action_reserve button", reserveSeats);
 				
 			});
-			
-			
 			
 		</script>
 		

@@ -23,7 +23,7 @@ A Spring boot app that implements a ticketting hold/reservation system for a ven
     
 ## HOW TO BUILD/TEST
 
-1. Clone the repo onto a git installed machine with this command `https://github.com/Med116/samsclub.git'. To quickly run it, run the command `mvn spring-boot:run` from the root of the git repo. This is where the `pom.xml` file is located.
+1. Clone the repo onto a git installed machine with this command `https://github.com/Med116/samsclub.git`. To quickly run it, run the command `mvn spring-boot:run` from the root of the git repo. This is where the `pom.xml` file is located.
 
 2.  To build with the tests : `cd` into the repo, and issue the command `mvn clean install`. This will install a runnable jar file into the `target` directory
 
@@ -31,7 +31,7 @@ A Spring boot app that implements a ticketting hold/reservation system for a ven
 
 4. Open up a web browser to [localhost:8080](http://localhost:8080 "localhost:8080").
 
-5. To test the app, stop the server (Hit Ctrl-C to stop), and then run `mvv test` in the root directory (where the .pom file resides)
+5. To test the app, stop the server (Hit Ctrl-C to stop), and then run `mvn test` in the root directory (where the .pom file resides)
  
  
 ## CONFIGURATION

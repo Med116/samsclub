@@ -15,7 +15,6 @@ import com.samsclub.ticketapp.data.SeatProvider;
 import com.samsclub.ticketapp.models.SeatHold;
 import com.samsclub.ticketapp.service.TicketService;
 import com.samsclub.ticketapp.service.TicketServiceImpl;
-import com.samsclub.ticketapp.util.Util;
 
 import junit.framework.TestCase;
 

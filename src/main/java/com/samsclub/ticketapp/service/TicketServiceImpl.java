@@ -6,18 +6,22 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.samsclub.ticketapp.config.Config;
 import com.samsclub.ticketapp.data.SeatProvider;
 import com.samsclub.ticketapp.models.Seat;
 import com.samsclub.ticketapp.models.SeatHold;
-import com.samsclub.ticketapp.util.Util;
 
 @Component
 @Service
 public class TicketServiceImpl implements TicketService{
 
+	
+	private @Autowired Config config; 
+	
 	@Override
 	public int numSeatsAvailable() {
 		return (int) SeatProvider.seats.stream()
@@ -27,10 +31,12 @@ public class TicketServiceImpl implements TicketService{
 	
 	@Override
 	public SeatHold findAndHoldSeats(int numSeats, String customerEmail) {
-		SeatHold seatHold = new SeatHold(numSeats, customerEmail);
+		SeatHold seatHold = new SeatHold();
+		seatHold.setCustomerEmail(customerEmail);
+		seatHold.setSeatCount(numSeats);
 		if(seatHold.checkIfSeatsLeft()){
 			System.out.println("Seats are available");
-			seatHold.holdSeats();
+			seatHold.holdSeats(config.getExpireSeconds());
 		}else{
 			System.out.println("Seats are not available");
 		}

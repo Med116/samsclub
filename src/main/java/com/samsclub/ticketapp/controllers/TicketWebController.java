@@ -3,6 +3,7 @@ package com.samsclub.ticketapp.controllers;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +17,13 @@ import com.samsclub.ticketapp.models.SeatHold;
 import com.samsclub.ticketapp.App;
 import com.samsclub.ticketapp.data.SeatProvider;
 import com.samsclub.ticketapp.service.TicketServiceImpl;
-import com.samsclub.ticketapp.util.Util;
 
 @Component
 @Controller
 public class TicketWebController {
 
+	
+	@Value("${testprop}") String test;
 	/**
 	 * The starting point of the web app
 	 * 
@@ -29,6 +31,7 @@ public class TicketWebController {
 	 */
 	@RequestMapping("/")
 	public String home() {
+		System.out.println("TST:" + test);
 		return "index";
 	}
 

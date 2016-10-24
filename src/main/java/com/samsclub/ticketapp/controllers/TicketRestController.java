@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.samsclub.ticketapp.config.Config;
 import com.samsclub.ticketapp.data.SeatProvider;
 import com.samsclub.ticketapp.models.Reservation;
 import com.samsclub.ticketapp.models.Seat;
 import com.samsclub.ticketapp.models.SeatHold;
 import com.samsclub.ticketapp.models.SeatsAvailable;
 import com.samsclub.ticketapp.service.TicketServiceImpl;
-import com.samsclub.ticketapp.util.Util;
 
 @Component
 @RestController
@@ -25,6 +25,9 @@ public class TicketRestController {
 
 	@Autowired
 	private TicketServiceImpl ticketService;
+	
+	@Autowired
+	private Config config;
 
 	/**
 	 * Attempts to holds seats by checking availability
@@ -69,7 +72,10 @@ public class TicketRestController {
 	 */
 	@RequestMapping(value = "/seats/available/", produces = "application/json")
 	public SeatsAvailable availableSeats() {
-		return new SeatsAvailable(ticketService.numSeatsAvailable());
+		
+		SeatsAvailable seatsAvailable = new SeatsAvailable(ticketService.numSeatsAvailable());
+		
+		return seatsAvailable;
 	}
 
 	/**

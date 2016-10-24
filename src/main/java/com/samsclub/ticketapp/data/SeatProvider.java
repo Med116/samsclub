@@ -21,7 +21,9 @@ public class SeatProvider {
 			Pattern.compile(",").splitAsStream("a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z")
 					.forEach(letter -> {
 						for (int i = 1; i <= 10; i++) {
-							seats.add(new Seat(letter + i));
+							Seat seat = new Seat();
+							seat.setSeatIndex(letter + i);
+							seats.add(seat);
 						}
 					});
 			// TODO: Change to logging

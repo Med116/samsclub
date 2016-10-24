@@ -3,7 +3,15 @@ package com.samsclub.ticketapp.models;
 import java.time.Instant;
 import java.util.Date;
 
-import com.samsclub.ticketapp.util.Util;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+import com.samsclub.ticketapp.config.Config;
+
+
 
 public class Seat {
 
@@ -15,10 +23,8 @@ public class Seat {
 	private int holdId;
 	private String reservationCode;
 	private String customerEmail;
-
-	public Seat(String index) {
-		this.setSeatIndex(index);
-	}
+	
+	
 
 	public String getSeatIndex() {
 		return seatIndex;
@@ -67,10 +73,10 @@ public class Seat {
 		this.held = reserved;
 	}
 
-	synchronized public void hold() {
+	synchronized public void hold(int seconds) {
 		setHeld(true);
 		setAvailable(false);
-		this.setHoldExpiration(Date.from(Instant.now().plusSeconds(Util.HOLD_SECONDS)));
+		this.setHoldExpiration(Date.from(Instant.now().plusSeconds(seconds)));
 	}
 
 	public int getHoldId() {
@@ -98,10 +104,6 @@ public class Seat {
 		this.reservationCode = reservationCode;
 	}
 
-	@Override
-	public String toString() {
-		return "[ SEAT:" + this.seatIndex + "]";
-	}
 
 	public String getCustomerEmail() {
 		return customerEmail;
@@ -118,5 +120,6 @@ public class Seat {
 		
 		return this;
 	}
+
 	
 }

@@ -19,8 +19,8 @@
 			<button>Hold Tickets</button>
 		</p>
 		
-		<p class="input_data action_reserve"> Reserve Tickets <input type="text"/>
-			<button>Reserve Tickets</button>
+		<p class="input_data action_reserve"> Your SeatHold Id: <span></span>
+			<button>Reserve</button>
 		</p>
 		
 		
@@ -60,7 +60,7 @@
 			}
 			
 			function reserveSeats(){
-				var holdId = jQuery(".action_reserve input").val();
+				var holdId = jQuery(".action_reserve span").text();
 				var data = {seatHoldId: holdId, email:getEmail};
 				jQuery.post("/seats/reserve/", data, function(json){
 					console.log(json);
@@ -111,7 +111,7 @@
 									list.append(jQuery("<li>" + seat.seatIndex + "</li>"))
 								});
 								jQuery("#hold_confirmation").append(list);
-								jQuery(".action_reserve input").val(json.holdId);
+								jQuery(".action_reserve span").text(json.holdId);
 								
 							}
 							getAvailableSeatsCount();

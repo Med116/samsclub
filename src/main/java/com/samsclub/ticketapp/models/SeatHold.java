@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,6 @@ import com.samsclub.ticketapp.App;
 import com.samsclub.ticketapp.data.SeatProvider;
 import com.samsclub.ticketapp.service.TicketService;
 import com.samsclub.ticketapp.service.TicketServiceImpl;
-import com.samsclub.ticketapp.util.Util;
 import com.samsclub.ticketapp.models.Seat;
 
 /**
@@ -26,9 +26,12 @@ import com.samsclub.ticketapp.models.Seat;
  *         service can retreive it, in order to reserve the seats they held
  *
  */
+
+
 public class SeatHold {
 
-	private TicketServiceImpl ticketService;
+	
+	private TicketService ticketService = new TicketServiceImpl();
 	private String customerEmail;
 	private int holdId;
 	private int seatCount;
@@ -36,33 +39,21 @@ public class SeatHold {
 	private boolean valid;
 	private Date expirationTime;
 	private List<Seat> seatsHeld;
+	public  int expireSeconds = 60;
 
-	public SeatHold(int seatCount, String email) {
-		this.setSeatCount(seatCount);
-		this.setCustomerEmail(email);
-		ticketService = new TicketServiceImpl();
-
-	}
-
+	
+		
+	
 	/**
 	 * holds seats, generates a hold id and sets it to this object, and the
 	 * individual seats held, so we can look up seats by the hold id for the
 	 * TicketServiceImpl::reserveSeats call
 	 */
-	public void holdSeats() {
+	public void holdSeats(int seconds) {
 		int holdId = getRandomId();
-		setSeatsHeld(SeatProvider.seats.stream().filter(Seat::isAvailable).limit(getSeatCount()) // limits
-																									// stream
-																									// to
-																									// the
-																									// number
-																									// of
-																									// seats
-																									// of
-																									// users
-																									// request
+		setSeatsHeld(SeatProvider.seats.stream().filter(Seat::isAvailable).limit(getSeatCount())
 				.map(seat -> {
-					seat.hold();
+					seat.hold(seconds);
 					seat.setHoldId(holdId);
 					seat.setCustomerEmail(getCustomerEmail());
 					return seat;
@@ -137,11 +128,10 @@ public class SeatHold {
 	}
 
 	/**
-	 * Sets the expiration of the hold to the future moment defined in
-	 * `Util.HOLD_SECONDS`
+	 * Sets the expiration of the hold to the future moment
 	 */
 	private void setExpirationTime() {
-		this.expirationTime = Date.from(Instant.now().plusSeconds(Util.HOLD_SECONDS));
+		this.expirationTime = Date.from(Instant.now().plusSeconds(expireSeconds));
 	}
 
 	public String getErrMsg() {
@@ -159,5 +149,6 @@ public class SeatHold {
 	public void setSeatsHeld(List<Seat> seatsHeld) {
 		this.seatsHeld = seatsHeld;
 	}
+	
 
 }

@@ -23,6 +23,7 @@ public class Seat {
 	private int holdId;
 	private String reservationCode;
 	private String customerEmail;
+	public static final String ERR_MSG = "Sorry, no seats are available";
 	
 	
 

@@ -9,14 +9,17 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import com.samsclub.ticketapp.data.SeatProvider;
+import com.samsclub.ticketapp.models.Seat;
 import com.samsclub.ticketapp.models.SeatHold;
 import com.samsclub.ticketapp.service.TicketService;
 import com.samsclub.ticketapp.service.TicketServiceImpl;
 
 import junit.framework.TestCase;
+
 
 public class TicketServiceImplTest extends TestCase {
 
@@ -48,10 +51,11 @@ public class TicketServiceImplTest extends TestCase {
 		assertNotNull(seatHold100Seats.getHoldId());
 
 		// this is over 260 seats, not enough seats: seathold should not give an
-		// id
+		// id, should also populate an error msg in the seathold object
 		SeatHold seatHold200More = ticketService.findAndHoldSeats(200, EMAIL_ID);
 		assertEquals(0, seatHold200More.getHoldId());
 		assertEquals(120, ticketService.numSeatsAvailable());
+		assertEquals(Seat.ERR_MSG, seatHold200More.getErrMsg());
 
 		// manually updating seats' expiraton date with 30s in the past to
 		// simulate expiration
@@ -62,7 +66,23 @@ public class TicketServiceImplTest extends TestCase {
 		});
 		assertEquals(260, ticketService.numSeatsAvailable());
 
+		
+		//reset dates to null so they are all avaiable
+		SeatProvider.seats.forEach(seat -> seat.setHoldExpiration(null));
 		// test reservation
+		SeatHold hold = ticketService.findAndHoldSeats(100, EMAIL_ID);
+		assertNull(hold.getErrMsg());
+		assertEquals(160, ticketService.numSeatsAvailable());
+		ticketService.reserveSeats(hold.getHoldId(), EMAIL_ID);
+		// reserve right away, set to expired
+		SeatProvider.seats.forEach(seat -> {
+			if (seat.getHoldExpiration() != null) {
+				seat.setHoldExpiration(expiredDate90SecondsAgo);
+			}
+		});
+		// there should still be 160 even after the expiration, since they are reserved
+		assertEquals(160, ticketService.numSeatsAvailable());
+		
 
 	}
 

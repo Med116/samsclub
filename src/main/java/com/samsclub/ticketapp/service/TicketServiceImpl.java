@@ -35,10 +35,9 @@ public class TicketServiceImpl implements TicketService{
 		seatHold.setCustomerEmail(customerEmail);
 		seatHold.setSeatCount(numSeats);
 		if(seatHold.checkIfSeatsLeft()){
-			System.out.println("Seats are available");
-			seatHold.holdSeats(config.getExpireSeconds());
+			seatHold.holdSeats(config != null ? config.getExpireSeconds() : 60);
 		}else{
-			System.out.println("Seats are not available");
+			seatHold.setErrMsg(Seat.ERR_MSG);
 		}
 		return seatHold;
 	

@@ -1,0 +1,72 @@
+<html>
+	<head>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<link type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.yellow{
+				background:yellow;
+				color:purple;
+			}
+			.seat{
+				width:50px;
+				height:50px;
+				float:left;
+				display: inline;
+				border:1px solid blue;
+			}
+			
+			.display_none{
+				display:none;
+			}
+			
+			.seat_held{
+				background:#ccc;
+			}
+			
+			.seat_reserved{
+				background:red;
+			}
+		</style>
+	</head>
+	<body style="margin-left:100px;padding-left:100px;">
+		<img width="200px" src="http://monroearts.com/wp-content/uploads/2015/07/tickets.png" />
+		<h1> Tickets Available: <span class="tix_count">...</span> </h1>
+		
+		<p class="input_data email"> Enter your email to hold and reserve tickets: <input type="text"/></p>
+		
+		<p class="input_data action_hold"> Hold Tickets (enter in amount you would like to hold): <input type="text"/>
+			<button>Hold Tickets</button>
+		</p>
+		
+		<p class="input_data action_reserve"> Your SeatHold Id: <span></span>
+			<button>Reserve</button>
+		</p>
+		
+		
+		<div id="hold_confirmation">
+		
+		</div>
+		
+		<div id="reserve_confirmation">
+		
+		</div>
+		
+		
+		<h2> Raw Seat Data </h2><button class="show_raw_data">show</button>
+		<div class="display_none" id="seats_chart">
+		
+		</div>
+		
+		<h2> Seats Layout </h2>
+		<div id="seats_layout">
+		
+		
+		</div>
+		
+		<script src="main.js">
+			
+		</script>
+		
+		
+	</body>
+</html>

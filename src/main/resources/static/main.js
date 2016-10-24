@@ -1,45 +1,3 @@
-<html>
-	<head>
-		<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-		<link type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-		<style type="text/css">
-			.yellow{
-				background:yellow;
-				color:purple;
-			}
-		</style>
-	</head>
-	<body style="margin-left:100px;padding-left:100px;">
-		<img src="http://monroearts.com/wp-content/uploads/2015/07/tickets.png" />
-		<h1> Tickets Available: <span class="tix_count">...</span> </h1>
-		
-		<p class="input_data email"> Enter your email to hold and reserve tickets: <input type="text"/></p>
-		
-		<p class="input_data action_hold"> Hold Tickets (enter in amount you would like to hold): <input type="text"/>
-			<button>Hold Tickets</button>
-		</p>
-		
-		<p class="input_data action_reserve"> Your SeatHold Id: <span></span>
-			<button>Reserve</button>
-		</p>
-		
-		
-		<div id="hold_confirmation">
-		
-		</div>
-		
-		<div id="reserve_confirmation">
-		
-		</div>
-		
-		
-		<h2> Raw Seat Data </h2>
-		<div id="seats_chart">
-		
-		</div>
-		
-		<script>
-			
 			function getAvailableSeatsCount(){
 				
 				jQuery.post("/seats/available/", function(json){
@@ -76,9 +34,29 @@
 				jQuery.post("/seats/all/", function(json){
 					
 					console.log("ALL SEATS: ", json);
+					
+					
 					root.html("<pre>" + JSON.stringify(json, null, "\t")  + "</pre>");
 					
-					// flash root to let know its been updated
+					
+					json.map(function(seat){
+							
+							var seatIndex = seat.seatIndex;
+							if(seat.held === true){
+								jQuery("." + seatIndex ).addClass("seat_held");
+							}else{
+								jQuery("." + seatIndex ).removeClass("seat_held");
+							}
+							
+							if(seat.reservationCode != null){
+								jQuery("." + seatIndex ).addClass("seat_reserved");
+							}else{
+								jQuery("." + seatIndex ).removeClass("seat_reserved");
+							}
+						
+					});
+					
+					// flash yellow to let know its been updated
 					setTimeout(function(){
 						root.find("pre").addClass("yellow");
 						setTimeout(function(){
@@ -106,11 +84,14 @@
 							console.log("JSON: " , json);
 							var holdId = json['holdId'];
 							if(parseInt(holdId)){
-								var list = jQuery("<ol></ol>");
+								
 								json.seatsHeld.map(function(seat){
-									list.append(jQuery("<li>" + seat.seatIndex + "</li>"))
+									var seatIndex = seat.seatIndex;
+									console.log("index:" + seatIndex);
+									jQuery("." + seatIndex).addClass("seat_held");
+									
+									
 								});
-								jQuery("#hold_confirmation").append(list);
 								jQuery(".action_reserve span").text(json.holdId);
 								
 							}
@@ -126,16 +107,31 @@
 				}
 			}
 			
+			
+			function updateSeatsLayout(){
+				
+				var alphabet = "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z";
+				var alphaArr= alphabet.split(",");
+				var root = jQuery("#seats_layout");
+				for(var a= 0; a < alphaArr.length; a++ ){
+					
+					for(var i = 1; i <= 10; i++){
+						var seatIndex =  alphaArr[a]+ i;
+						var seatDiv = jQuery("<div class=\"seat " + seatIndex + "\"></div>");
+						seatDiv.append(jQuery("<span>" + seatIndex + "</span>"));
+						root.append(seatDiv);
+						
+					
+					}
+				}
+				
+			}
+			
 			jQuery(document).ready(function(){
 				getAvailableSeatsCount();
 				updateSeatsChart();
+				updateSeatsLayout();
 				jQuery(document).on("click", ".action_hold button", holdSeats);
 				jQuery(document).on("click", ".action_reserve button", reserveSeats);
 				
 			});
-			
-		</script>
-		
-		
-	</body>
-</html>

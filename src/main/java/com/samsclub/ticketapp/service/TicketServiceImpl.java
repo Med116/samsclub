@@ -22,6 +22,7 @@ public class TicketServiceImpl implements TicketService{
 	
 	private @Autowired Config config; 
 	
+
 	@Override
 	public int numSeatsAvailable() {
 		return (int) SeatProvider.seats.stream()
@@ -46,7 +47,7 @@ public class TicketServiceImpl implements TicketService{
 	@Override
 	public String reserveSeats(int seatHoldId, String customerEmail) {
 		Date now = new Date();
-		String reservationCode = "RESERVED|" + seatHoldId  + "|" + new SimpleDateFormat("yyyy-MM-dd").format(now);
+		String reservationCode = "RESERVED|" + seatHoldId  + "|" + new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss").format(now);
 		List<Seat> reservedSeats = SeatProvider.seats.stream()
 		.filter(seat-> seat.getHoldId() == seatHoldId)
 		.filter(seat-> seat.getHoldExpiration().getTime() > now.getTime())
@@ -55,5 +56,8 @@ public class TicketServiceImpl implements TicketService{
 		 return reservedSeats.size() > 0 ? reservationCode : null;
 		
 	}
+	
 
 }
+
+

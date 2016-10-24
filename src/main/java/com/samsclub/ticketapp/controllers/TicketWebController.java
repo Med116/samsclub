@@ -23,7 +23,7 @@ import com.samsclub.ticketapp.service.TicketServiceImpl;
 public class TicketWebController {
 
 	
-	@Value("${testprop}") String test;
+	
 	/**
 	 * The starting point of the web app
 	 * 
@@ -31,7 +31,6 @@ public class TicketWebController {
 	 */
 	@RequestMapping("/")
 	public String home() {
-		System.out.println("TST:" + test);
 		return "index";
 	}
 

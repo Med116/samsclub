@@ -3,14 +3,6 @@ package com.samsclub.ticketapp.models;
 import java.time.Instant;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-
-import com.samsclub.ticketapp.config.Config;
-
 
 
 public class Seat {

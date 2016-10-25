@@ -1,19 +1,11 @@
 package com.samsclub.ticketapp.models;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-
-import com.samsclub.ticketapp.App;
 import com.samsclub.ticketapp.data.SeatProvider;
 import com.samsclub.ticketapp.service.TicketService;
 import com.samsclub.ticketapp.service.TicketServiceImpl;

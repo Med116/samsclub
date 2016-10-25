@@ -9,7 +9,7 @@ A Spring boot app that implements a ticketting hold/reservation system for a ven
 - No login required, a user uses his/her email address to identify.
 - The Seat data is loaded up once, and modified while the server is running. It does not attempt to save to disk. This means that once the server is shutdown, there is no way to restore any data.
 - There are 260 seats (26 rows, one for each letter and 10 seats per row). They are all initialized to the 'available' status.
-- Seats can be held for default of 60 seconds before the customer's hold expires. This can be configured at startup with the `-expire.seconds <seconds>` flag.
+- Seats can be held for default of 60 seconds before the customer's hold expires. This can be configured at startup with the `--expire.seconds=<seconds>` flag. (See Configuration section for details.)
 - Seats are held by the best seats first, you cannot pick your seats. Row A is the best row, Z is the back row. Seats are held from the lowest row number to the highest row number.
 
     
@@ -36,4 +36,5 @@ A Spring boot app that implements a ticketting hold/reservation system for a ven
  
 ## CONFIGURATION
  
- You can configure the expiration of the seatHold object via the application.properties, or the command line. To configure this when running, run the server with the command (from the target directory) `java -jar ticketapp-0.0.1-SNAPSHOT.jar --expire.seconds=10` to make expiration happen in 10 seconds 
+ You can configure the expiration of the seatHold object via the application.properties, or the command line. To configure this when running, run the server with the command (from the target directory) `java -jar ticketapp-0.0.1-SNAPSHOT.jar --expire.seconds=10` to make expiration happen in 10 seconds. You can alternatively open up the application.properties file and change the value
+ there, and then re-build the app.

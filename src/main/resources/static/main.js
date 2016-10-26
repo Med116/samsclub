@@ -3,6 +3,9 @@
 	var holding = false;
 	var timer;
 	
+	function isNumeric(n) {
+  		return !isNaN(parseFloat(n)) && isFinite(n);
+	}
 	
 	function getAvailableSeatsCount(){
 		
@@ -15,7 +18,7 @@
 	function getEmail(){
 		
 		var email = jQuery(".email input").val();
-		if(email !== undefined){
+		if(email !== ''){
 			return email;
 		}else{
 			alert("You must enter in an email address");
@@ -26,6 +29,9 @@
 	function reserveSeats(){
 		var holdId = jQuery(".action_reserve span").text();
 		var data = {seatHoldId: holdId, email:getEmail};
+		
+		console.log("Reserve Seats Data: " , data);
+		
 		jQuery.post("/seats/reserve/", data, function(json){
 			console.log(json);
 			jQuery("#reserve_confirmation").text("SUCCESS: YOUR CODE: " + json.code + " SEATS : " + json.seats.length  );
@@ -33,7 +39,6 @@
 			holding = false;
 			clearTimeout(timer);
 			jQuery(".hold_timer").toggle();
-			jQuery(".cancel_hold").toggle();
 				
 		});	
 	
@@ -93,6 +98,13 @@
 			
 			var holdCount = jQuery(".action_hold input").val();
 			
+			if(!isNumeric(holdCount)){
+				alert("Your hold count  (" + holdCount + ") is not a number" );
+				return false;
+			}
+			
+		
+			
 			if(holdCount !== undefined){
 				
 				jQuery.post("/seats/find-and-hold/",{email: email,numSeats: holdCount },  function(json){
@@ -129,7 +141,6 @@
 								holding = false;
 								setTimeout(function(){
 									timerDiv.toggle();
-									jQuery(".cancel_hold").toggle();
 								}, 2000)
 								
 							}

@@ -1,5 +1,6 @@
 package com.samsclub.ticketapp.controllers;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,12 +49,11 @@ public class TicketRestController {
 	 *            this may be expired, the ticket service checks
 	 * @param email
 	 *            this must match the seats held, ticket service checks
-	 * @return
+	 * @return reservaion object with code and seatlist, customer details
 	 */
 	@RequestMapping(value = "/seats/reserve/", method = RequestMethod.POST)
-	public Reservation reserveSeat(@RequestParam("seatHoldId") String seatHoldId, @RequestParam("email") String email) {
+	public Reservation reserveSeats(@RequestParam("seatHoldId") String seatHoldId, @RequestParam("email") String email) {
 		String reservationId = ticketService.reserveSeats(Integer.parseInt(seatHoldId), email);
-
 		Reservation reservation = new Reservation(email);
 		if (reservationId != null) {
 			reservation.setCode(reservationId);
@@ -82,5 +82,7 @@ public class TicketRestController {
 	public List<Seat> allSeats() {
 		return SeatProvider.seats;
 	}
+	
+	
 
 }

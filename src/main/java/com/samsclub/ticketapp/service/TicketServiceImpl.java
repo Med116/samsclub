@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,8 +19,9 @@ import com.samsclub.ticketapp.models.SeatHold;
 @Service
 public class TicketServiceImpl implements TicketService{
 
-	
-	private @Autowired Config config; 
+	public static final String EXPIRED_STATUS = "EXPIRED";
+	public static final String NO_SEATS_FOUND_STATUS = "NO_SEATS_FOUND";
+	private @Autowired Config config;
 	
 
 	@Override
@@ -46,17 +48,20 @@ public class TicketServiceImpl implements TicketService{
 	@Override
 	public String reserveSeats(int seatHoldId, String customerEmail) {
 		Date now = new Date();
+		List<Seat> reservedSeatsBySeatHoldId = SeatProvider.seats.stream()
+				.filter(seat-> seat.getHoldId() == seatHoldId)
+				.collect(Collectors.toList());
+		if(reservedSeatsBySeatHoldId.size() == 0){
+			return NO_SEATS_FOUND_STATUS;
+		}
+		boolean expired = reservedSeatsBySeatHoldId.stream()
+				.anyMatch(seat-> seat.getHoldExpiration().getTime() < now.getTime());
 		String reservationCode = "RESERVED|" + seatHoldId  + "|" + new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss").format(now);
-		List<Seat> reservedSeats = SeatProvider.seats.stream()
-		.filter(seat-> seat.getHoldId() == seatHoldId)
-		.filter(seat-> seat.getHoldExpiration().getTime() > now.getTime())
-		.map(seat -> seat.reserveSeat(reservationCode, customerEmail))
-		.collect(Collectors.toList());
-		 return reservedSeats.size() > 0 ? reservationCode : null;
+		return expired ? EXPIRED_STATUS : reservationCode;
 		
 	}
-	
 
+	
 }
 
 

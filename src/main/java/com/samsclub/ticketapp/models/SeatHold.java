@@ -31,8 +31,7 @@ public class SeatHold {
 	private boolean valid;
 	private Date expirationTime;
 	private List<Seat> seatsHeld;
-	public  int expireSeconds = 60;
-
+	private boolean expired = false;
 	
 		
 	
@@ -52,7 +51,7 @@ public class SeatHold {
 				}).collect(Collectors.toList()));
 		setValid(true);
 		setHoldId(holdId);
-		setExpirationTime();
+		setExpirationTime(seconds);
 		System.out.println("SEATS LEFT IN holdSeats after stream: " + ticketService.numSeatsAvailable());
 	}
 
@@ -122,7 +121,7 @@ public class SeatHold {
 	/**
 	 * Sets the expiration of the hold to the future moment
 	 */
-	private void setExpirationTime() {
+	private void setExpirationTime(int expireSeconds) {
 		this.expirationTime = Date.from(Instant.now().plusSeconds(expireSeconds));
 	}
 
@@ -140,6 +139,14 @@ public class SeatHold {
 
 	public void setSeatsHeld(List<Seat> seatsHeld) {
 		this.seatsHeld = seatsHeld;
+	}
+
+	public boolean isExpired() {
+		return expired;
+	}
+
+	public void setExpired(boolean expired) {
+		this.expired = expired;
 	}
 	
 

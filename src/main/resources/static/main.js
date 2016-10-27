@@ -111,6 +111,11 @@
 				
 				jQuery.post("/seats/find-and-hold/",{email: email,numSeats: holdCount },  function(json){
 					console.log("JSON HOLD: " , json);
+					
+					if(json.errMsg != null){
+						alert(json.errMsg);
+						return;
+					}
 					var holdId = json['holdId'];
 					if(parseInt(holdId)){
 						

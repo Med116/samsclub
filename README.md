@@ -20,12 +20,12 @@ A Spring boot app that implements a ticketting hold/reservation system for a ven
 1. Java 8 JRE
 2. git (to clone this)
 3. maven
-4. Browser to run the UI 
+4. Browser to run the UI (with javascript enabled - tested on Chrome only)
 
     
 ## HOW TO BUILD/TEST
 
-1. Clone the repo onto a git installed machine with this command `https://github.com/Med116/samsclub.git`. To quickly run it, run the command `mvn spring-boot:run` from the root of the git repo. This is where the `pom.xml` file is located.
+1. Clone the repo onto a git installed machine with this command `https://github.com/Med116/samsclub.git`. To quickly run it, run the command `mvn spring-boot:run` from the root of the git repo. This is where the `pom.xml` file is located. Make sure you don't have any other app running on port 8080 when running this, or else it will fail.
 
 2.  To build with the tests : `cd` into the repo, and issue the command `mvn clean install`. This will install a runnable jar file into the `target` directory
 

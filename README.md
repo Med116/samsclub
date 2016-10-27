@@ -3,6 +3,8 @@
 
 A Spring boot app that implements a ticketting hold/reservation system for a venue.
 
+![Ticket reservation service app screenshot](https://s3-us-west-2.amazonaws.com/samsclub.ticketapp/ticketApp.png "Ticket Reservation Service app")
+
 
 ## ASSUMPTIONS
 
@@ -38,3 +40,5 @@ A Spring boot app that implements a ticketting hold/reservation system for a ven
  
  You can configure the expiration of the seatHold object via the application.properties, or the command line. To configure this when running, run the server with the command (from the target directory) `java -jar ticketapp-0.0.1-SNAPSHOT.jar --expire.seconds=10` to make expiration happen in 10 seconds. You can alternatively open up the application.properties file and change the value
  there, and then re-build the app.
+ 
+ 

@@ -8,10 +8,11 @@ import com.samsclub.ticketapp.data.SeatProvider;
 
 public class Reservation {
 
-	public String code;
-	public List<Seat> seats;
-	public String email;
-	public Date reservationDate;
+	private String code;
+	private List<Seat> seats;
+	private String email;
+	private Date reservationDate;
+	private boolean expired = false;
 
 	public Reservation( String email) {
 		this.email = email;
@@ -51,6 +52,14 @@ public class Reservation {
 
 	public void setReservationDate(Date reservationDate) {
 		this.reservationDate = reservationDate;
+	}
+
+	public boolean isExpired() {
+		return expired;
+	}
+
+	public void setExpired(boolean expired) {
+		this.expired = expired;
 	}
 
 }

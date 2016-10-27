@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+
 import com.samsclub.ticketapp.data.SeatProvider;
 import com.samsclub.ticketapp.service.TicketService;
 import com.samsclub.ticketapp.service.TicketServiceImpl;
@@ -18,7 +22,6 @@ import com.samsclub.ticketapp.models.Seat;
  *         service can retreive it, in order to reserve the seats they held
  *
  */
-
 
 public class SeatHold {
 
@@ -75,11 +78,10 @@ public class SeatHold {
 	 * @return a random number
 	 */
 	private int getRandomId() {
-		// TODO: get distinct list of seathold ids already issued, to make sure
-		// its not already used
-		// ? Should this just increment by 1 every time
+		// TODO: get distinct list of seathold ids already issued, to make sure no collisions happen
+		// This should ideally come from a DB auto increment or global unique id
 		Random rand = new Random();
-		return rand.nextInt(1000);
+		return rand.nextInt(1000000);
 	}
 
 	public int getSeatCount() {

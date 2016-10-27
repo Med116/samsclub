@@ -34,12 +34,18 @@
 		
 		jQuery.post("/seats/reserve/", data, function(json){
 			console.log(json);
-			jQuery("#reserve_confirmation").text("SUCCESS: YOUR CODE: " + json.code + " SEATS : " + json.seats.length  );
-			updateSeatsChart();
+			if(json.expired == true){
+				jQuery("#reserve_confirmation").text("FAILURE: Your seat hold expired");
+			}else{
+				jQuery("#reserve_confirmation").text("SUCCESS: YOUR RESERVATION CODE: " + json.code + " SEATS : " + json.seats.length  );
+				updateSeatsChart();
+				
+			}
+			
 			holding = false;
 			clearTimeout(timer);
 			jQuery(".hold_timer").toggle();
-				
+			
 		});	
 	
 	}
@@ -50,11 +56,7 @@
 		jQuery.post("/seats/all/", function(json){
 			
 			console.log("ALL SEATS: ", json);
-			
-			
 			root.html("<pre>" + JSON.stringify(json, null, "\t")  + "</pre>");
-			
-			
 			json.map(function(seat){
 					
 					var seatIndex = "seat_" + seat.seatIndex;
@@ -94,7 +96,7 @@
 		var email = getEmail();
 		console.log("EMAIL: " , email);
 		
-		if(email){
+		if(email !== undefined && email.length > 0){
 			
 			var holdCount = jQuery(".action_hold input").val();
 			
@@ -122,7 +124,8 @@
 						holding = true;
 						jQuery(".action_reserve span").text(json.holdId);
 						// set timer , countdown from expireSeconds
-						var expSec = parseInt(json.expireSeconds);
+						var expSec = parseInt(jQuery("#default_expire_seconds").text());
+						console.log("EXP SEC: " + expSec);
 						
 						var timerDiv = jQuery(".hold_timer");
 						

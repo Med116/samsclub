@@ -48,7 +48,7 @@ public class TicketRestController {
 	 * @param seatHoldId
 	 *            this may be expired, the ticket service checks
 	 * @param email
-	 *            this must match the seats held, ticket service checks
+	 *            this must match the seats held email, ticket service checks
 	 * @return reservaion object with code and seatlist, customer details
 	 */
 	@RequestMapping(value = "/seats/reserve/", method = RequestMethod.POST)
@@ -56,7 +56,12 @@ public class TicketRestController {
 		String reservationId = ticketService.reserveSeats(Integer.parseInt(seatHoldId), email);
 		Reservation reservation = new Reservation(email);
 		if (reservationId != null) {
+			if(reservationId.equals(TicketServiceImpl.EXPIRED_STATUS)){
+				reservation.setExpired(true);
+				return reservation;
+			}
 			reservation.setCode(reservationId);
+			
 		} else {
 			System.out.println("ERR: null reservation id");
 		}
